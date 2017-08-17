@@ -93,7 +93,7 @@ You now just need three lines to activate and test the API:
 from SendGmailSimplified import SimplifiedGmailApi
 
 GmailServer = SimplifiedGmailApi("gmail_api_files/client_data.json", "gmail_api_files/client_secret.json", "gmail_api_files")
-GmailServer.send_plain("yourEmailAddress@gmail.com", "Test-Subject", "1,2,3,4...\nTest, test")
+GmailServer.send_plain("enterHereYourEmailAddress@gmail.com", "Test-Subject", "1,2,3,4...\nTest, test")
 ```
 
 The three paths are:

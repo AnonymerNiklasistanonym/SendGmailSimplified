@@ -19,8 +19,17 @@ import json
 
 
 class SimplifiedGmailApi:
+    """SendGmailSimplified API
+    A simple Gmail API handler class. Use the Gmail API send Email option
+    - without many lines to implement in your script (only 3 are needed)
+    - and easy to use and easy understand methods
+    If you want to know more or have problems visit it on GitHub:
+    https://github.com/AnonymerNiklasistanonym/SendGmailSimplified
+    """
 
-    def __init__(self, client_data_path, client_secret_path, api_directory=os.path.join(os.path.expanduser('~'), "GmailCredentialsApi")):
+    def __init__(self,
+                 client_data_path, client_secret_path,
+                 api_directory=os.path.join(os.path.expanduser('~'), "GmailCredentialsApi")):
         """'Constructor' - Initial setup of the Gmail API.
 
         Args:
@@ -42,8 +51,10 @@ class SimplifiedGmailApi:
         # check if the necessary two files for using the API are not None
         if client_data_path is None or client_secret_path is None:
             # >> abort the process if they are
-            print("Something went wrong!!! API will not work!")
-            logging.warning("SimplifiedGmailApi: The parameter (paths) are empty!")
+            info_text = ("SimplifiedGmailApi could not be started since necessary parameter are None." +
+                         "(client_data_path,  client_secret_path)")
+            print(info_text)
+            logging.warning(info_text)
             self.SetupOk = False
         else:
             # >> if they aren't None load everything from the files and start the API
@@ -66,13 +77,20 @@ class SimplifiedGmailApi:
             http = credentials.authorize(httplib2.Http())
             self.service = discovery.build('gmail', 'v1', http=http)
 
+            info_text = (self.EMAIL_ADDRESS + " successfully connected to Google Account Gmail API "
+                         "over the SimplifiedGmailApi with the following scope: " + self.SCOPES)
+            print(info_text)
+            logging.info(info_text)
+
             # After this ran you should be logged in and can use the API (if the scope says send)
 
     """
     Handy and easy to use methods to send plain text or HTML emails with or without attachments:
     """
 
-    def send_plain(self, receiver_email_address, subject="No subject", text="No text."):
+    def send_plain(self,
+                   receiver_email_address,
+                   subject="No subject", text="No text."):
         """Send a simple plain (only) text email to someone.
 
         Args:
@@ -85,7 +103,10 @@ class SimplifiedGmailApi:
         """
         return self.__send_mail(receiver_email_address, subject, text)
 
-    def send_plain_with_attachment(self, receiver_email_address, subject="No subject", text="No text.", file_path=None):
+    def send_plain_with_attachment(self,
+                                   receiver_email_address,
+                                   subject="No subject", text="No text.",
+                                   file_path=None):
         """Send a plain (only) text email to someone with one file attached.
 
         Args:
@@ -99,7 +120,10 @@ class SimplifiedGmailApi:
         """
         return self.__send_mail(receiver_email_address, subject, text, False, file_path)
 
-    def send_plain_with_attachments(self, receiver_email_address, subject="No subject", text="No text.", file_paths=None):
+    def send_plain_with_attachments(self,
+                                    receiver_email_address,
+                                    subject="No subject", text="No text.",
+                                    file_paths=None):
         """Send a plain (only) text email to someone with more than one file attached.
 
         Args:
@@ -113,26 +137,33 @@ class SimplifiedGmailApi:
         """
         return self.__send_mail(receiver_email_address, subject, text, False, file_paths, True)
 
-    def send_html(self, receiver_email_address, subject="No subject", text="No text."):
+    def send_html(self,
+                  receiver_email_address,
+                  subject="No subject", text="No text."):
         """Send a simple HTML text email to someone.
 
         Args:
         receiver: The email address of the receiver.
         subject: The title of the email.
-        text: The text content to be sent to the receiver.("\n" will automatically be converted to "<br>")
+        text: The text content to be sent to the receiver.
+              ("\n" will automatically be converted to "<br>")
 
         Returns:
         True if email was sent. False if not.
         """
         return self.__send_mail(receiver_email_address, subject, text, True)
 
-    def send_html_with_attachment(self, receiver_email_address, subject="No subject", text="No text.", file_path=None):
+    def send_html_with_attachment(self,
+                                  receiver_email_address,
+                                  subject="No subject", text="No text.",
+                                  file_path=None):
         """Send a HTML text email to someone with one file attached.
 
         Args:
         receiver_email_address: The email address of the receiver.
         subject: The title of the email.
-        text: The text content to be sent to the receiver.("\n" will automatically be converted to "<br>")
+        text: The text content to be sent to the receiver.
+              ("\n" will automatically be converted to "<br>")
         file: Path to the file that should be attached.
 
         Returns:
@@ -140,13 +171,17 @@ class SimplifiedGmailApi:
         """
         return self.__send_mail(receiver_email_address, subject, text, True, file_path)
 
-    def send_html_with_attachments(self, receiver_email_address, subject="No subject", text="No text.", file_paths=None):
+    def send_html_with_attachments(self,
+                                   receiver_email_address,
+                                   subject="No subject", text="No text.",
+                                   file_paths=None):
         """Send a HTML text email to someone with more than one file attached.
 
         Args:
         receiver_email_address: The email address of the receiver.
         subject: The title of the email.
-        text: The text content to be sent to the receiver.("\n" will automatically be converted to "<br>")
+        text: The text content to be sent to the receiver.
+              ("\n" will automatically be converted to "<br>")
         file_paths: List of the paths to the files that should be attached.
 
         Returns:
@@ -154,13 +189,17 @@ class SimplifiedGmailApi:
         """
         return self.__send_mail(receiver_email_address, subject, text, True, file_paths, True)
 
-    def send_mail_diy(self,receiver_email_address, subject="No subject", text="No text.", content_is_html=False, file_paths=None):
+    def send_mail_diy(self,
+                      receiver_email_address,
+                      subject="No subject", text="No text.",
+                      content_is_html=False, file_paths=None):
         """Send an email. Combine the parameter how you like.
 
         Args:
         receiver_email_address: The email address of the receiver.
         subject: The title of the email.
-        text: The text content to be sent to the receiver.("\n" will automatically be converted to "<br>" if the next parameter is True)
+        text: The text content to be sent to the receiver.
+              ("\n" will automatically be converted to "<br>" if the next parameter is True)
         content_is_html: Set true if text is HTML, if it's plain text set it false.
         file_paths: List of the paths to the files that should be attached.
 
@@ -173,13 +212,17 @@ class SimplifiedGmailApi:
     Main send method:
     """
 
-    def __send_mail(self, receiver, subject="No subject", text="No text.", html_mail=False, attachment=None, list_of_attachments=False):
+    def __send_mail(self,
+                    receiver,
+                    subject="No subject", text="No text.", html_mail=False,
+                    attachment=None, list_of_attachments=False):
         """Creates an message and sends it.
 
         Args:
         receiver: The email address of the receiver.
         subject: The title of the email.
-        text: The text content to be sent to the receiver.("\n" will automatically be converted to "<br>" if the next parameter is True)
+        text: The text content to be sent to the receiver.
+              ("\n" will automatically be converted to "<br>" if the next parameter is True)
         content_is_html: Set true if text is HTML, if it's plain text set it false.
         file_paths: List of the paths to the files that should be attached.
 
@@ -191,19 +234,31 @@ class SimplifiedGmailApi:
         if receiver is None:
             # >> else abort the process
             self.SetupOk = False
-            print("You need to input the email address of the receiver!")
+            info_text = "SimplifiedGmailApi could not send email because of missing receiver!"
+            print(info_text)
+            logging.warning(info_text)
 
         # Check if all parameter fulfill the minimum conditions (there are strings for them)
         if self.SetupOk:
 
-            # Console feedback:
+            # Console feedback of message:
             print("Send email from " + self.EMAIL_ADDRESS_NAME + " to: " + receiver + ":")
             print("          " + subject + " (" + ("html" if html_mail else "plain text") + ")")
-            text = "<br>".join(text.split("\n"))
+
+            if html_mail:
+                text = "<br>".join(text.split("\n"))
+                output_text = text.split('<br>')
+            else:
+                output_text = text.split('\n')
+
             i = 1
-            for x in text.split('<br>'):
+            for x in output_text:
                 print("     " + "{0:04}".format(i) + " " + x)
                 i += 1
+
+            if attachment is not None:
+                print("\n          Attachments:")
+                print("          " + str(attachment))
 
             # Create the message:
             # >> check if the text is plain text or HTML
@@ -213,29 +268,35 @@ class SimplifiedGmailApi:
                     message = self.__create_message(receiver, subject, text, True)
                 else:
                     # >> if there is a list list_of_attachments is true
-                    message = self.__create_message_with_attachment(receiver, subject, text, True, attachment, list_of_attachments)
+                    message = self.__create_message_with_attachment(receiver, subject, text, True,
+                                                                    attachment, list_of_attachments)
             else:
                 # >> check if there is even an attachment
                 if attachment is None:
                     message = self.__create_message(receiver, subject, text)
                 else:
                     # >> if there is a list list_of_attachments is true
-                    message = self.__create_message_with_attachment(receiver, subject, text, False, attachment, list_of_attachments)
+                    message = self.__create_message_with_attachment(receiver, subject, text, False,
+                                                                    attachment, list_of_attachments)
 
             # Send the message:
             # >> check if the Gmail API says the message was sent
             if self.__send_message(message) is not None:
-                print("- successfully send to " + receiver)
-                logging.info("email was successfully send to " + receiver)
+                info_text = "Message was successfully send to " + receiver
+                print(info_text)
+                logging.info(info_text)
                 return True
             else:
-                print("WARNING - Message could not be send to " + receiver)
-                logging.warning("email was not send to " + receiver)
+                info_text = "Message could not be send to " + receiver
+                print(info_text)
+                logging.warning(info_text)
                 return False
 
         else:
             # >> else abort the process
-            print("Something went wrong in the setup. Please check your data.")
+            info_text = "Something went wrong in the setup! Service stopped. Please check your data."
+            print(info_text)
+            logging.warning(info_text)
             return False
 
     """
@@ -322,7 +383,9 @@ class SimplifiedGmailApi:
             print('Storing credentials to ' + credential_path)
         return credentials
 
-    def __create_message_with_attachment(self, to, subject, message_text, message_html, file, attachment_list=False):
+    def __create_message_with_attachment(self,
+                                         to, subject, message_text, message_html,
+                                         file, attachment_list=False):
         """Create a message for an email.
 
         Args:
@@ -352,9 +415,7 @@ class SimplifiedGmailApi:
         else:
             list_of_attachments = [file]
 
-        print("\n     Attachments:")
         for attachment in list_of_attachments:
-            print("        - " + attachment)
             content_type, encoding = mimetypes.guess_type(attachment)
 
             if content_type is None or encoding is not None:
@@ -380,7 +441,6 @@ class SimplifiedGmailApi:
             filename = os.path.basename(attachment)
             msg.add_header('Content-Disposition', 'attachment', filename=filename)
             message.attach(msg)
-        # return {'raw': base64.urlsafe_b64encode(message.as_string())}
 
         if self.RASPBERRY:
             # Raspberry Pi 3 - Python 2.7.9
