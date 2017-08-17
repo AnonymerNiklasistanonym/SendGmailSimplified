@@ -133,17 +133,15 @@ class SimplifiedGmailApi:
         message['from'] = self.EMAIL_ADDRESS_NAME
         message['subject'] = subject
         print(message)
-        # print(message.as_string())
-        # print({'raw': base64.urlsafe_b64encode(message.as_string()).encode()})
-        # return {'raw': base64.urlsafe_b64encode(message.as_string())}
 
-        raw = base64.urlsafe_b64encode(message.as_bytes())
-        raw = raw.decode()
-        body = {'raw': raw}
+        # Windows 10 Pycharm EDU:
+        # raw = base64.urlsafe_b64encode(message.as_bytes())
+        # raw = raw.decode()
+        # body = {'raw': raw}
+        # return body
 
-        return body
-
-
+        # Raspberry Pi 3 - Python 2.7.9
+        return {'raw': base64.urlsafe_b64encode(message.as_string().encode())}
 
     def __get_credentials(self):
         """Gets valid user credentials from storage.
