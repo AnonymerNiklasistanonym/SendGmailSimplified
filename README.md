@@ -114,6 +114,7 @@ Probably you find something like `403 - Message could not be send`.
 
 But this is not a problem: Just click like the official Gmail API says on the link just to get forwarded back to the API Developer Console.
 Then you do what the text says (at least for me) and click `Enable`.
+Now run the script again.
 
 
 
@@ -124,8 +125,9 @@ If you want a fast start into how to use the API just take a look into the `demo
 ```python
 from SendGmailSimplified import SimplifiedGmailApi
 
-# send for demo uses emails to you or someone other:
-yourEmailAddress = "niklas.mikeler@gmail.com"
+
+# send for demo uses emails to you or someone else:
+yourEmailAddress = "enterHereYourEmailAddress@gmail.com"
 
 # replace the placeholders and enter your paths like the README.md says
 DemoServer = SimplifiedGmailApi("gmail_api_files/client_data.json", "gmail_api_files/client_secret.json", "gmail_api_files")
@@ -137,17 +139,17 @@ DemoServer.send_plain(yourEmailAddress, "Test-Subject", "1,2,3,4...\nTest, test"
 DemoServer.send_plain(yourEmailAddress, "Test-Subject", "<html><body>1,2,3,4...\nTest, test</body></html>")
 
 # Enter a path to a file (< 25mb) that you want to attach
-attachment = "SendGmailSimplified.py"
+attachment = "demo.py"
 # Send a plain text message with attachments
 DemoServer.send_plain_with_attachment(yourEmailAddress, "Test-Plain-With-Attachment", "1,2,3,4...\nTest, test", attachment)
 
 # Enter paths to files (< 25mb) that you want to attach
-attachments = ["test.m4a", "beta.txt", "test.py", "SendGmailSimplified.py"]
+attachments = ["demo.py", "SendGmailSimplified.py"]
 # Send a HTML text message with attachments
 DemoServer.send_html_with_attachments(yourEmailAddress, "Test-HTML-With-Attachments", "<html><body>1,2,3,4...\nTest, test</body></html>", attachments)
 ```
 
-Just input your email and change all attachment paths to real files + replace the paths in line 7 and you are good to go. (Run it and you will see it).
+Just input your email and change all attachment paths to real files + replace the paths in line 8 and you are good to go. (Run it and you will see it).
 
 
 
