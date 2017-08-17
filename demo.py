@@ -1,6 +1,6 @@
 from SendGmailSimplified import SimplifiedGmailApi
 
-# send for demo uses emails to you or someone other:
+# send for demo uses emails to you or someone else:
 yourEmailAddress = "niklas.mikeler@gmail.com"
 
 # replace the placeholders and enter your paths like the README.md says

@@ -73,7 +73,17 @@ Edit the file as following:
 - copy the file to another desired directory of yourself
   (if you want it simple put it in the same directory)
 
-### 3. Activate the API in your python script
+### 3. Install the Google API python client
+
+Therefore just open the console and enter:
+
+```
+$ pip install --upgrade google-api-python-client
+```
+
+And confirm if you didn't sudo'd.
+
+### 4. Activate the API in your python script
 
 This is even simpler.
 
@@ -107,10 +117,46 @@ Then you do what the text says (at least for me) and click `Enable`.
 
 
 
+## Demo
+
+If you want a fast start into how to use the API just take a look into the `demo.py` script:
+
+```python
+from SendGmailSimplified import SimplifiedGmailApi
+
+# send for demo uses emails to you or someone other:
+yourEmailAddress = "niklas.mikeler@gmail.com"
+
+# replace the placeholders and enter your paths like the README.md says
+DemoServer = SimplifiedGmailApi("gmail_api_files/client_data.json", "gmail_api_files/client_secret.json", "gmail_api_files")
+
+# Send a plain text message
+DemoServer.send_plain(yourEmailAddress, "Test-Subject", "1,2,3,4...\nTest, test")
+
+# Send a HTML text message
+DemoServer.send_plain(yourEmailAddress, "Test-Subject", "<html><body>1,2,3,4...\nTest, test</body></html>")
+
+# Enter a path to a file (< 25mb) that you want to attach
+attachment = "SendGmailSimplified.py"
+# Send a plain text message with attachments
+DemoServer.send_plain_with_attachment(yourEmailAddress, "Test-Plain-With-Attachment", "1,2,3,4...\nTest, test", attachment)
+
+# Enter paths to files (< 25mb) that you want to attach
+attachments = ["test.m4a", "beta.txt", "test.py", "SendGmailSimplified.py"]
+# Send a HTML text message with attachments
+DemoServer.send_html_with_attachments(yourEmailAddress, "Test-HTML-With-Attachments", "<html><body>1,2,3,4...\nTest, test</body></html>", attachments)
+```
+
+Just input your email and change all attachment paths to real files + replace the paths in line 7 and you are good to go. (Run it and you will see it).
+
+
+
 ## Problems, ideas?
 
 - If this didn't worked for you message me, make an Issue and we try to help if we have time.
 - If you have any ideas, optimizations please message me too (or open a issue/pull-request).
+
+
 
 
 
