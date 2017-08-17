@@ -125,13 +125,13 @@ class SimplifiedGmailApi:
         # message_text.encode('us-ascii', 'ignore').decode('us-ascii', 'ignore')
 
         if message_html:
-            message = MIMEText(message_text, 'html')
+            message = MIMEText(message_text.encode('ascii', 'ignore'), 'html')
         else:
-            message = MIMEText(message_text)
+            message = MIMEText(message_text.encode('ascii', 'ignore'))
 
         message['to'] = to
         message['from'] = self.EMAIL_ADDRESS_NAME
-        message['subject'] = subject
+        message['subject'] = subject.encode('ascii', 'ignore')
         print(message)
 
         # Windows 10 Pycharm EDU:
