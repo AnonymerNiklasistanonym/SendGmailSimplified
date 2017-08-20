@@ -85,3 +85,7 @@ $ pip freeze > requirements.txt
 ```
 
 And upload the file with your script so that everyone can simply install via step 5 all required packages.
+
+## 9. Remove it
+
+Just `deactivate` it like in step 8 and remove the whole directory. Now it's deleted.
