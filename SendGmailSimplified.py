@@ -39,8 +39,8 @@ class SimplifiedGmailApi:
 
         """
 
-        # Because of current problems this is true when you use it on a Raspberry Pi 3 with Raspbian:
-        self.RASPBERRY = True
+        # Because of current problems this is true when you use it on a NOT_PYTHON_3 computer
+        self.NOT_PYTHON_3 = True
         # Other support will probably come but everything else is to now not supported!
 
         self.PATH_FOR_GMAIL_CLIENT_SECRET_FILE = client_secret_path
@@ -348,8 +348,8 @@ class SimplifiedGmailApi:
         message['from'] = self.EMAIL_ADDRESS_NAME
         message['subject'] = subject
 
-        if self.RASPBERRY:
-            # Raspberry Pi 3 - Python 2.7.9
+        if self.NOT_PYTHON_3:
+            # NOT_PYTHON_3 Pi 3 - Python 2.7.9
             return {'raw': base64.urlsafe_b64encode(message.as_string().encode('ascii', 'ignore'))}
         else:
             # Windows 10 Pycharm EDU:
@@ -442,8 +442,8 @@ class SimplifiedGmailApi:
             msg.add_header('Content-Disposition', 'attachment', filename=filename)
             message.attach(msg)
 
-        if self.RASPBERRY:
-            # Raspberry Pi 3 - Python 2.7.9
+        if self.NOT_PYTHON_3:
+            # NOT_PYTHON_3 Pi 3 - Python 2.7.9
             return {'raw': base64.urlsafe_b64encode(message.as_string().encode('ascii', 'ignore'))}
         else:
             # Windows 10 Pycharm EDU:

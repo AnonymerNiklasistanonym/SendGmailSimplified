@@ -17,6 +17,14 @@ Have fun!
 
 
 
+**Attention:**
+
+It seems like the current version supports only "only text" mails. On my Raspberry Pi 3 with python 2.7.13 everything runs. Therefore be warned if you want to use attachments on higher python versions - it probably doesn't work for now - but I will look into it!
+
+(also change the variable NOT_PYTHON_3 to False if it doesn't work)
+
+
+
 ## Instructions
 
 (Source: [Google Developers Gmail API Python](https://developers.google.com/gmail/api/quickstart/python))
