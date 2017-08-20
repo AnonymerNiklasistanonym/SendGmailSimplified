@@ -1,7 +1,7 @@
 # SendGmailSimplified
 Send with only 3 lines of python code a email over the official Gmail API. Easy to add and simple to use.
 
-**Virtual environment:** [How to setup and use `virtualenv` to run this script](docs/CONTRIBUTING.md)
+**Virtual environment:** [How to setup and use `virtualenv` to run this script](VIRTUALENV.md)
 
 
 
