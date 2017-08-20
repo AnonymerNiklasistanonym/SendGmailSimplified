@@ -6,13 +6,13 @@ Tutorial how to run this script in an virtual python environment on your compute
 
 ## 1. Install `virtualenv`
 
-```python
+```
 $ pip install virtualenv
 ```
 
 Test your installation:
 
-```python
+```
 $ virtualenv --version
 ```
 
@@ -22,7 +22,7 @@ $ virtualenv --version
 
 Go into a directory where you want to place the virtual environment and enter:
 
-```python
+```
 $ virtualenv project_name
 ```
 
@@ -40,7 +40,7 @@ Now lets's activate the virtual environment.
 
 Go into the folder `project_name` and enter:
 
-```python
+```
 $ source bin/activate
 ```
 
@@ -52,7 +52,7 @@ Before you can run the project you need to install the required packages (becaus
 
 This can be achieved by installing the packages that are listed in the `requirements.txt` file over this command:
 
-```python
+```
 $ pip install -r requirements.txt
 ```
 
@@ -72,7 +72,7 @@ Have fun programming!
 
 If you want to exit the virtual environment and get back to your system just type:
 
-```python
+```
 $ deactivate
 ```
 
@@ -80,7 +80,7 @@ $ deactivate
 
 If you want that others also can run this script on their computers using `virtualenv` run this command:
 
-```python
+```
 $ pip freeze > requirements.txt
 ```
 
