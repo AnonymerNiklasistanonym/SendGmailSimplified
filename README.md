@@ -1,5 +1,5 @@
 # SendGmailSimplified
-Send with only 3 lines of python code a email over the official Gmail API. Easy to add and simple to use.
+Send with only 3 lines of python code a email over the official Gmail API. Easy to add and simple to use. Attachments only supported on python 2.
 
 **Virtual environment:** [How to setup and use `virtualenv` to run this script](VIRTUALENV.md)
 
@@ -19,9 +19,10 @@ Have fun!
 
 **Attention:**
 
-It seems like the current version supports only "only text" mails. On my Raspberry Pi 3 with python 2.7.13 everything runs. Therefore be warned if you want to use attachments on higher python versions - it probably doesn't work for now - but I will look into it!
+It seems like the current version is only fully supported on python 2.* (tested with 2.7.13 on my Raspberry Pi 3).
+If you are on python 3.* only plain text or html text without attachments will work.
 
-(also change the variable NOT_PYTHON_3 to False if it doesn't work)
+(also change the variable NOT_PYTHON_3 to False if you use any python > 2)
 
 
 
