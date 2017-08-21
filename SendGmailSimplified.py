@@ -1,4 +1,3 @@
-from __future__ import print_function
 import httplib2
 from apiclient import discovery
 from oauth2client import client
@@ -16,6 +15,7 @@ from apiclient import errors
 import argparse
 import logging
 import json
+import sys
 
 
 class SimplifiedGmailApi:
@@ -40,7 +40,14 @@ class SimplifiedGmailApi:
         """
 
         # Because of current problems this is true when you use it on a NOT_PYTHON_3 computer
-        self.NOT_PYTHON_3 = True
+        if sys.version_info[0] < 3:
+            self.NOT_PYTHON_3 = True
+        else:
+            self.NOT_PYTHON_3 = False
+            info_text = "You are using python > 2 -> Therefore you can not send attachments."
+            print(info_text)
+            logging.warning(info_text)
+
         # Other support will probably come but everything else is to now not supported!
 
         self.PATH_FOR_GMAIL_CLIENT_SECRET_FILE = client_secret_path
@@ -267,21 +274,35 @@ class SimplifiedGmailApi:
                 if attachment is None:
                     message = self.__create_message(receiver, subject, text, True)
                 else:
-                    # >> if there is a list list_of_attachments is true
-                    message = self.__create_message_with_attachment(receiver, subject, text, True,
+                    # if it is not python 3 we can continue
+                    if self.NOT_PYTHON_3:
+                        # >> if there is a list list_of_attachments is true
+                        message = self.__create_message_with_attachment(receiver, subject, text, True,
                                                                     attachment, list_of_attachments)
+                    else:
+                        info_text = "This API only supports attachments on python 2.*"
+                        print(info_text)
+                        logging.warning(info_text)
+                        message = None
             else:
                 # >> check if there is even an attachment
                 if attachment is None:
                     message = self.__create_message(receiver, subject, text)
                 else:
-                    # >> if there is a list list_of_attachments is true
-                    message = self.__create_message_with_attachment(receiver, subject, text, False,
+                    # if it is not python 3 we can continue
+                    if self.NOT_PYTHON_3:
+                        # >> if there is a list list_of_attachments is true
+                        message = self.__create_message_with_attachment(receiver, subject, text, False,
                                                                     attachment, list_of_attachments)
+                    else:
+                        info_text = "This API only supports attachments on python 2.*"
+                        print(info_text)
+                        logging.warning(info_text)
+                        message = None
 
             # Send the message:
             # >> check if the Gmail API says the message was sent
-            if self.__send_message(message) is not None:
+            if message is not None and self.__send_message(message) is not None:
                 info_text = "Message was successfully send to " + receiver
                 print(info_text)
                 logging.info(info_text)
