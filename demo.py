@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from SendGmailSimplified import SimplifiedGmailApi
 
 
@@ -18,10 +20,10 @@ Send normal text/HTML emails:
 """
 
 # Send a plain text message
-DemoServer.send_plain(yourEmailAddress, "Test-Plain-Subject", "1,2,3,4...\nTest, test")
+DemoServer.send_plain(yourEmailAddress, "Test-Plain-Subject (ÄÖÜäöü%$)", "1,2,3,4...\nTest, test\nÄÖÜäöü%$")
 
 # Send a HTML text message
-DemoServer.send_html(yourEmailAddress, "Test-HTML-Subject", "<html><body>1,2,3,4...\nTest, test</body></html>")
+DemoServer.send_html(yourEmailAddress, "Test-HTML-Subject (ÄÖÜäöü%$)", "<html><body>1,2,3,4...\nTest, test\nÄÖÜäöü%$</body></html>")
 
 
 """

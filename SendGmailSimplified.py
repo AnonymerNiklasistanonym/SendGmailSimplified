@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import httplib2
 from apiclient import discovery
 from oauth2client import client
@@ -16,6 +18,7 @@ import argparse
 import logging
 import json
 import sys
+import re
 
 
 class SimplifiedGmailApi:
@@ -39,12 +42,12 @@ class SimplifiedGmailApi:
 
         """
 
-        # Because of current problems this is true when you use it on a NOT_PYTHON_3 computer
+        # Because of current problems this is true when you use it on a PYTHON_2 computer
         if sys.version_info[0] < 3:
-            self.NOT_PYTHON_3 = True
+            self.PYTHON_2 = True
         else:
-            self.NOT_PYTHON_3 = False
-            info_text = "You are using python > 2 -> Therefore you can not send attachments."
+            self.PYTHON_2 = False
+            info_text = "You are using Python > 2 -> Therefore you can not send attachments."
             print(info_text)
             logging.warning(info_text)
 
@@ -63,6 +66,15 @@ class SimplifiedGmailApi:
             print(info_text)
             logging.warning(info_text)
             self.SetupOk = False
+        elif not os.path.isfile(client_data_path) or not os.path.isfile(client_secret_path):
+            # >> abort the process if they are
+            info_text = ("SimplifiedGmailApi could not be started since the following files weren't found: ")
+            for pathOfFile in [client_data_path, client_secret_path]:
+                if not os.path.isfile(pathOfFile):
+                    info_text += "\n - " + pathOfFile
+            print(info_text)
+            logging.warning(info_text)
+            self.SetupOk = False
         else:
             # >> if they aren't None load everything from the files and start the API
             self.SetupOk = True
@@ -78,16 +90,26 @@ class SimplifiedGmailApi:
             self.SCOPES = data_file["permission-scope"]
             self.APPLICATION_NAME = data_file["application-name"]
             self.EMAIL_ADDRESS = data_file["email"]
-            self.EMAIL_ADDRESS_NAME = data_file["email-name"] + " <" + self.EMAIL_ADDRESS + ">"
+            self.EMAIL_ADDRESS_NAME = data_file["email-name"].encode("ascii", "ignore").decode("ascii")
+            self.EMAIL_ADDRESS_NAME += " <" + self.EMAIL_ADDRESS + ">"
 
-            credentials = self.__get_credentials()
-            http = credentials.authorize(httplib2.Http())
-            self.service = discovery.build('gmail', 'v1', http=http)
+            try:
+                credentials = self.__get_credentials()
+                http = credentials.authorize(httplib2.Http())
+                self.service = discovery.build('gmail', 'v1', http=http)
 
-            info_text = (self.EMAIL_ADDRESS + " successfully connected to Google Account Gmail API "
-                         "over the SimplifiedGmailApi with the following scope: " + self.SCOPES)
-            print(info_text)
-            logging.info(info_text)
+                info_text = (self.EMAIL_ADDRESS + " successfully connected to Google Account Gmail API "
+                             "over the SimplifiedGmailApi with the following scope: " + self.SCOPES)
+                print(info_text)
+                logging.info(info_text)
+            except Exception as e:
+                # >> If there are problems end the script
+                self.SetupOk = False
+                info_text = (self.EMAIL_ADDRESS + " could not be connected to Google Account Gmail API!\nRead the"
+                                                  " README.md file to find out what's wrong and check all your files"
+                                                  " on correct information!")
+                print(info_text)
+                logging.warning(info_text)
 
             # After this ran you should be logged in and can use the API (if the scope says send)
 
@@ -248,14 +270,26 @@ class SimplifiedGmailApi:
         # Check if all parameter fulfill the minimum conditions (there are strings for them)
         if self.SetupOk:
 
+            # remove bad symbols from text when using python 2
+            if self.PYTHON_2:
+                subject = subject.replace("ö", "oe").replace("Ö", "Oe").replace("ä", "ae")\
+                    .replace("Ä", "Ae").replace("ü", "ue").replace("Ü", "Ue")
+                subject = subject.decode("utf-8").encode("ascii", "ignore")
+
             # Console feedback of message:
             print("Send email from " + self.EMAIL_ADDRESS_NAME + " to: " + receiver + ":")
             print("          " + subject + " (" + ("html" if html_mail else "plain text") + ")")
 
             if html_mail:
                 text = "<br>".join(text.split("\n"))
-                output_text = text.split('<br>')
+                output_text = text.split('\n')
             else:
+                if self.PYTHON_2:
+                    text = text.replace("ö", "oe").replace("Ö", "Oe").replace("ä", "ae")\
+                        .replace("Ä", "Ae").replace("ü", "ue").replace("Ü", "Ue")
+                    # This will result in data loss because of ascii email
+                    text = text.decode("utf-8").encode("ascii","ignore")
+
                 output_text = text.split('\n')
 
             i = 1
@@ -264,7 +298,7 @@ class SimplifiedGmailApi:
                 i += 1
 
             if attachment is not None:
-                print("\n          Attachments:")
+                print("          Attachments:")
                 print("          " + str(attachment))
 
             # Create the message:
@@ -275,10 +309,10 @@ class SimplifiedGmailApi:
                     message = self.__create_message(receiver, subject, text, True)
                 else:
                     # if it is not python 3 we can continue
-                    if self.NOT_PYTHON_3:
+                    if self.PYTHON_2:
                         # >> if there is a list list_of_attachments is true
                         message = self.__create_message_with_attachment(receiver, subject, text, True,
-                                                                    attachment, list_of_attachments)
+                                                                        attachment, list_of_attachments)
                     else:
                         info_text = "This API only supports attachments on python 2.*"
                         print(info_text)
@@ -290,10 +324,10 @@ class SimplifiedGmailApi:
                     message = self.__create_message(receiver, subject, text)
                 else:
                     # if it is not python 3 we can continue
-                    if self.NOT_PYTHON_3:
+                    if self.PYTHON_2:
                         # >> if there is a list list_of_attachments is true
                         message = self.__create_message_with_attachment(receiver, subject, text, False,
-                                                                    attachment, list_of_attachments)
+                                                                        attachment, list_of_attachments)
                     else:
                         info_text = "This API only supports attachments on python 2.*"
                         print(info_text)
@@ -369,9 +403,9 @@ class SimplifiedGmailApi:
         message['from'] = self.EMAIL_ADDRESS_NAME
         message['subject'] = subject
 
-        if self.NOT_PYTHON_3:
-            # NOT_PYTHON_3 Pi 3 - Python 2.7.9
-            return {'raw': base64.urlsafe_b64encode(message.as_string().encode('ascii', 'ignore'))}
+        if self.PYTHON_2:
+            # PYTHON_2 Pi 3 - Python 2.7.9
+            return {'raw': base64.urlsafe_b64encode(message.as_string())}
         else:
             # Windows 10 Pycharm EDU:
             raw = base64.urlsafe_b64encode(message.as_bytes())
@@ -463,12 +497,18 @@ class SimplifiedGmailApi:
             msg.add_header('Content-Disposition', 'attachment', filename=filename)
             message.attach(msg)
 
-        if self.NOT_PYTHON_3:
-            # NOT_PYTHON_3 Pi 3 - Python 2.7.9
-            return {'raw': base64.urlsafe_b64encode(message.as_string().encode('ascii', 'ignore'))}
+        if self.PYTHON_2:
+            # PYTHON_2 Pi 3 - Python 2.7.9
+            return {'raw': base64.urlsafe_b64encode(message.as_string())}
         else:
             # Windows 10 Pycharm EDU:
             raw = base64.urlsafe_b64encode(message.as_bytes())
             raw = raw.decode()
             body = {'raw': raw}
             return body
+
+    if __name__ == "__main__":
+        print("Run the demo.py script for a demo or visit"
+              " https://github.com/AnonymerNiklasistanonym/SendGmailSimplified. This is a library.")
+    else:
+        print("SimplifiedGmailApi imported.")
