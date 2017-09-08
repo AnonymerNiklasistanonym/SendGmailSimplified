@@ -18,7 +18,6 @@ import argparse
 import logging
 import json
 import sys
-import re
 
 
 class SimplifiedGmailApi:
@@ -288,7 +287,7 @@ class SimplifiedGmailApi:
                     text = text.replace("ö", "oe").replace("Ö", "Oe").replace("ä", "ae")\
                         .replace("Ä", "Ae").replace("ü", "ue").replace("Ü", "Ue")
                     # This will result in data loss because of ascii email
-                    text = text.decode("utf-8").encode("ascii","ignore")
+                    text = text.decode("utf-8").encode("ascii", "ignore")
 
                 output_text = text.split('\n')
 

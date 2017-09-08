@@ -196,6 +196,34 @@ Just input your email and change all attachment paths to real files + replace th
 
 
 
+## How can you use it in your project as git submodule?
+
+If you generally wanna know how to do it visit this site: https://github.com/blog/2104-working-with-submodules
+
+1. Open the console in the directory where you want to place the folder with all files from this repository
+
+2. Then enter:
+
+   ```
+   $ git submodule add https://github.com/AnonymerNiklasistanonym/SendGmailSimplified SimplifiedGmailApiSubmodule
+   ```
+
+3. If you want to use it in a script which is located in the same directory just add:
+
+   ```python
+   from SimplifiedGmailApiSubmodule.SendGmailSimplified import SimplifiedGmailApi
+   ```
+
+4. Now you can use the script like in the Demo
+
+5. If any updates be released and you want to update the submodule use:
+
+   ```
+   $ git submodule update --init --recursive
+   ```
+
+
+
 ## Problems, ideas?
 
 - If this didn't worked for you message me, make an Issue and we try to help if we have time.
