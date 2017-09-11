@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""Demo of the SimplifiedGmailApi"""
+
+
 from SendGmailSimplified import SimplifiedGmailApi
 
 
 # Send for demo uses emails to you or someone else:
-yourEmailAddress = "enterHereYourEmailAddress@gmail.com"
+YOUR_EMAIL_ADDRESS = "enterHereXourEmailAddress@gmail.com"
 
 
 """
@@ -12,7 +15,9 @@ Setup line:
 """
 
 # Replace the placeholders and enter your paths like the README.md says
-DemoServer = SimplifiedGmailApi("gmail_api_files/client_data.json", "gmail_api_files/client_secret.json", "gmail_api_files")
+DEMO_SERVER = SimplifiedGmailApi("gmail_api_files/client_data.json",
+                                 "gmail_api_files/client_secret.json",
+                                 "gmail_api_files")
 
 
 """
@@ -20,10 +25,14 @@ Send normal text/HTML emails:
 """
 
 # Send a plain text message
-DemoServer.send_plain(yourEmailAddress, "Test-Plain-Subject (ÄÖÜäöü%$)", "1,2,3,4...\nTest, test\nÄÖÜäöü%$")
+DEMO_SERVER.send_plain(YOUR_EMAIL_ADDRESS,
+                       "Test-Plain-Subject (ÄÖÜäöü%$)",
+                       "1,2,3,4...\nTest, test\nÄÖÜäöü%$")
 
 # Send a HTML text message
-DemoServer.send_html(yourEmailAddress, "Test-HTML-Subject (ÄÖÜäöü%$)", "<html><body>1,2,3,4...\nTest, test\nÄÖÜäöü%$</body></html>")
+DEMO_SERVER.send_html(YOUR_EMAIL_ADDRESS,
+                      "Test-HTML-Subject (ÄÖÜäöü%$)",
+                      "<html><body>1,2,3,4...\nTest, test\nÄÖÜäöü%$</body></html>")
 
 
 """
@@ -32,17 +41,22 @@ Send emails with attachments:
 """
 
 # Enter a path to a file (< 25mb) that you want to attach
-attachment = "demo.py"
+ATTACHMENT = "demo.py"
 
 # Send a plain text message with attachments
-DemoServer.send_plain_with_attachment(yourEmailAddress, "Test-Plain-With-Attachment-Subject", "1,2,3,4...\nTest, test", attachment)
+DEMO_SERVER.send_plain_with_attachment(YOUR_EMAIL_ADDRESS,
+                                       "Test-Plain-With-Attachment-Subject",
+                                       "1,2,3,4...\nTest, test", ATTACHMENT)
 
 
 # Enter paths to files (< 25mb) that you want to attach
-attachments = ["demo.py", "SendGmailSimplified.py"]
+ATTACHMENTS = [ATTACHMENT, "SendGmailSimplified.py"]
 
 # Send a HTML text message with attachments
-DemoServer.send_html_with_attachments(yourEmailAddress, "Test-HTML-With-Attachments-Subject", "<html><body>1,2,3,4...\nTest, test</body></html>", attachments)
+DEMO_SERVER.send_html_with_attachments(YOUR_EMAIL_ADDRESS,
+                                       "Test-HTML-With-Attachments-Subject",
+                                       "<html><body>1,2,3,4...\nTest, test</body></html>",
+                                       ATTACHMENTS)
 
 
 """
@@ -51,10 +65,12 @@ Bonus: Send any or in this case a HTML text message to more than one person
 """
 
 # Enter another email address
-anotherEmailAddress = "anotherCool@email.com"
+ANOTHER_EMAIL_ADDRESS = "anotherCool@email.adress"
 
 # Add all recipients to a list
-email_list = [yourEmailAddress, anotherEmailAddress]
+EMAIL_LIST = [YOUR_EMAIL_ADDRESS, ANOTHER_EMAIL_ADDRESS]
 
 # Add the list with ', '.join(list) instead of a single email address
-DemoServer.send_html(', '.join(email_list), "Test-HTML-Multiple-Recipients-Subject", "<html><body>1,2,3,4...\nTest, test</body></html>")
+DEMO_SERVER.send_html(', '.join(EMAIL_LIST),
+                      "Test-HTML-Multiple-Recipients-Subject",
+                      "<html><body>1,2,3,4...\nTest, test</body></html>")
