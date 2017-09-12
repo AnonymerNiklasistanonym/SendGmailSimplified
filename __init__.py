@@ -1,5 +1,5 @@
 """This is needed to import this module into any kind of project as a folder"""
 
-# use: from %NameOfTheFolderWhereTheApiIS%.SendGmailSimplified import SimplifiedGmailApi
+# use: from %NameOfTheFolderWhereTheApiIS%.SendGmailSimplified import SendGmailSimplified
 
-from . import SimplifiedGmailApi
+from . import SendGmailSimplified
